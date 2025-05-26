@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	docker "github.com/fsouza/go-dockerclient"
+	"sort"
 	"strconv"
 	"sync"
 )
@@ -11,6 +12,7 @@ const (
 	ContainerLabelGroupName    = "me.zylinski.sleepycontainers.group_name"
 	ContainerLabelAccessibleAt = "me.zylinski.sleepycontainers.accessible_at_port"
 	ContainerLabelServiceName  = "me.zylinski.sleepycontainers.service_name"
+	ContainerLabelPriority     = "me.zylinski.sleepycontainers.priority"
 )
 
 type Container struct {
@@ -20,6 +22,7 @@ type Container struct {
 	ServiceName    string
 	AccessiblePort int
 	IsRunning      bool
+	Priority       int
 }
 
 type ContainerGroup struct {
@@ -34,6 +37,28 @@ func (c *ContainerGroup) IsAllRunning() bool {
 		}
 	}
 	return true
+}
+
+func (c *ContainerGroup) GetContainersByHighestPriority() []*Container {
+	containersCopy := make([]*Container, len(c.Containers))
+	copy(containersCopy, c.Containers)
+
+	sort.Slice(containersCopy, func(i, j int) bool {
+		return containersCopy[i].Priority < containersCopy[j].Priority
+	})
+
+	return containersCopy
+}
+
+func (c *ContainerGroup) GetContainersByLowestPriority() []*Container {
+	containersCopy := make([]*Container, len(c.Containers))
+	copy(containersCopy, c.Containers)
+
+	sort.Slice(containersCopy, func(i, j int) bool {
+		return containersCopy[i].Priority > containersCopy[j].Priority
+	})
+
+	return containersCopy
 }
 
 type DockerClient struct {
@@ -51,11 +76,18 @@ func NewDockerClient(client *docker.Client) *DockerClient {
 func (c *DockerClient) parseContainer(container *docker.APIContainers) (*Container, error) {
 	accessibleAt := ""
 	serviceName := ""
+	priority := 0
 	for key, value := range container.Labels {
 		if key == ContainerLabelAccessibleAt {
 			accessibleAt = value
 		} else if key == ContainerLabelServiceName {
 			serviceName = value
+		} else if key == ContainerLabelPriority {
+			var err error
+			priority, err = strconv.Atoi(value)
+			if err != nil {
+				return nil, fmt.Errorf("invalid priority value %s: %w", value, err)
+			}
 		}
 	}
 
@@ -77,6 +109,7 @@ func (c *DockerClient) parseContainer(container *docker.APIContainers) (*Contain
 		GroupName:      container.Labels[ContainerLabelGroupName],
 		ServiceName:    serviceName,
 		AccessiblePort: port,
+		Priority:       priority,
 		ContainerName:  container.Names[0],
 		IsRunning:      container.State == "running",
 	}, nil

@@ -119,7 +119,7 @@ func (s *ContainerService) InactiveContainersCleanerLoop() {
 }
 
 func (s *ContainerService) startContainers(group *ContainerGroup) {
-	for _, container := range group.Containers {
+	for _, container := range group.GetContainersByHighestPriority() {
 		if !container.IsRunning && !s.DockerClient.IsContainerStarting(container.ID) && !s.DockerClient.IsContainerStopping(container.ID) {
 			logrus.WithField("name", container.ContainerName).WithField("group", container.GroupName).Infof("Starting container")
 			err := s.DockerClient.StartContainer(container.ID)
@@ -132,7 +132,7 @@ func (s *ContainerService) startContainers(group *ContainerGroup) {
 }
 
 func (s *ContainerService) stopContainers(group *ContainerGroup) {
-	for _, container := range group.Containers {
+	for _, container := range group.GetContainersByLowestPriority() {
 		if container.IsRunning && !s.DockerClient.IsContainerStarting(container.ID) && !s.DockerClient.IsContainerStopping(container.ID) {
 			s.shuttingDown.Store(group.Name, true)
 			logrus.WithField("name", container.ContainerName).WithField("group", container.GroupName).Infof("Stopping containers due to inactivity")

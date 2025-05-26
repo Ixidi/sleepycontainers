@@ -34,6 +34,7 @@ services:
       me.zylinski.sleepycontainers.group_name: "a"
       me.zylinski.sleepycontainers.accessible_at_port: "8080"
       me.zylinski.sleepycontainers.service_name: "test-service"
+      me.zylinski.sleepycontainers.priority: "1"
     ports:
       - "8080:80"
   test-service2:
@@ -42,12 +43,14 @@ services:
       me.zylinski.sleepycontainers.group_name: "a"
       me.zylinski.sleepycontainers.accessible_at_port: "8080"
       me.zylinski.sleepycontainers.service_name: "test-service2"
+      me.zylinski.sleepycontainers.priority: "2"
     ports:
       - "8085:80"
   test-service3:
     image: strm/helloworld-http
     labels:
       me.zylinski.sleepycontainers.group_name: "a"
+      me.zylinski.sleepycontainers.priority: "3"
     ports:
       - "8086:80"
 ```
@@ -59,3 +62,5 @@ Group name is used to group containers together, so you can stop and start them 
 Accessible port is used to specify the port on which the container is accessible when it is running.
 
 Service name is used to specify the name of the service, which will be used in the HTTP request to access the container.
+
+Priority is used to determine the order in which containers are started when they are needed. Lower number means higher priority.
