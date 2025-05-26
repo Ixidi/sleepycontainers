@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trwa uruchamianie projektu...</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e6f0ff, #f4f9ff);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-top: 1rem;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        #lottie {
+            width: 280px;
+            height: 280px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+<lottie-player
+        id="lottie"
+        src="https://lottie.host/c2d6bcb5-d547-4aac-aac8-f8f97f4be307/Cph1Pv5mng.json"
+        background="transparent"
+        speed="1"
+        loop
+        autoplay
+></lottie-player>
+
+<h1>Dziękujemy za cierpliwość!</h1>
+<p>Projekt <strong>{{.GroupName}}</strong> właśnie się uruchamia.</p>
+<p>Za chwilę nastąpi przekierowanie...</p>
+
+<div class="footer">Miłego dnia!</div>
+
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+<script>
+    setTimeout(function () {
+        location.reload()
+    }, 10000);
+</script>
+</body>
+</html>

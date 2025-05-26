@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wystąpił błąd</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ffe6e6, #fff5f5);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      color: #b00020;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+      max-width: 90%;
+    }
+
+    #lottie {
+      width: 280px;
+      height: 280px;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      color: #a1a1a1;
+    }
+  </style>
+</head>
+<body>
+<lottie-player
+        id="lottie"
+        src="https://lottie.host/2f18a9b5-e51b-4d1a-af28-35091f4ec653/pGMfWQKKZJ.json"
+        background="transparent"
+        speed="1"
+        loop
+        autoplay
+></lottie-player>
+
+<h1>Coś poszło nie tak</h1>
+<p>Wystąpił problem podczas ładowania projektu.</p>
+<p>Spróbuj ponownie za chwilę lub skontaktuj się z administratorem, jeśli problem będzie się powtarzał.</p>
+
+<div class="footer">Przepraszamy za niedogodności</div>
+
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</body>
+</html>

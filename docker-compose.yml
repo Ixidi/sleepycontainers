@@ -1,0 +1,12 @@
+services:
+  sleepycontainers:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SLEEPYCONTAINERS_SERVICE_NAME_EXTRACTOR: "query"
+      SLEEPYCONTAINERS_PORT: 12345
+      SLEEPYCONTAINERS_TIMEOUT: 1h
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: "host"
